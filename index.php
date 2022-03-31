@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . "/connect.php";
 date_default_timezone_set('Europe/Istanbul');
 $con = file_get_contents("https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=2022-01-26&startDate=2022-01-26");
 $json = json_decode($con, true);
