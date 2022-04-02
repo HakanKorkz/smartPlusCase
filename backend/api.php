@@ -1,13 +1,20 @@
 <?php
 set_time_limit(60000);
 
-//$connect = file_get_contents("https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=2022-02-07&startDate=2022-02-07");
-$connect = file_get_contents("https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=2022-01-26&startDate=2022-01-26");
+if (isset($_POST["startDate"])) {
+    if (!empty($_POST["startDate"])) {
+        $apiLink = "https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=" . $_POST["startDate"] . "&startDate=" . $_POST["startDate"];
+    } else {
+        $apiLink = "https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=2022-01-26&startDate=2022-01-26";
+    }
+} else {
+    $apiLink = "https://seffaflik.epias.com.tr/transparency/service/market/intra-day-trade-history?endDate=2022-01-26&startDate=2022-01-26";
+}
+$connect = file_get_contents($apiLink);
 
 function dates($code, $connect): array
 {
     $json = json_decode($connect, true);
-
     $totalSales = [];
     $TotalTransactionAmount = [];
     $WeightedAveragePrice = [];
@@ -29,20 +36,6 @@ function dates($code, $connect): array
 
     return ["$code" => ["totalSales" => array_sum($totalSales), "TotalTransactionAmount" => array_sum($TotalTransactionAmount), "WeightedAveragePrice" => array_sum($WeightedAveragePrice)]];
 
-//    print_r($data);
-//
-//    print_r(array_sum($totalSales)); // tüm adet ve fiyat toplamlarının sonucu alındı
-//    echo "<br>";
-//    print_r(array_sum($TotalTransactionAmount)); // tüm işlem miktarı sonucu toplandı
-//    echo "<br>";
-//    print_r(array_sum($WeightedAveragePrice)); // tüm ağırlıklı ortalama fiyat sonucu toplandı
-//
-//print_r(array_sum($totalSales)); // tüm adet ve fiyat toplamlarının sonucu alındı
-//echo "<br>";
-//print_r(array_sum($TotalTransactionAmount)); // tüm işlem miktarı sonucu toplandı
-//echo "<br>";
-//print_r(array_sum($WeightedAveragePrice)); // tüm ağırlıklı ortalama fiyat sonucu toplandı
-
 }
 
 function conractUniq($connect): array
@@ -55,39 +48,21 @@ function conractUniq($connect): array
         }
     }
 
-    return  array_unique($conract);
+    return array_unique($conract);
 }
 
 
-
-//$connract=["PH22012603","PH22012608","PH22012607","PH22012604"];
-//echo "<pre>";
-//$uniqArray=array_unique($connract);
-//foreach ($uniqArray as $item) {
-//
-//    $data=array_unique(dates($item,$connect));
-//    print_r($data);
-//
-//}
+$conractUniq = conractUniq($connect);
 
 
-//exit();
-//$data=dates("PH22012603",$connect);
-//print_r($data);
-//exit();
-
-$conractUniq=conractUniq($connect);
-
+$pack = [];
 foreach ($conractUniq as $Item) {
-$data=dates($Item,$connect);
+    $data = dates($Item, $connect);
+    $date = "$Item[6]$Item[7]/$Item[4]$Item[5]/20$Item[2]$Item[3] $Item[8]$Item[9]:00";
+    $pack[] = ["date" => $date, "totalSales" => $data[$Item]["totalSales"], "TotalTransactionAmount" => $data[$Item]["TotalTransactionAmount"], "WeightedAveragePrice" => $data[$Item]["WeightedAveragePrice"]];
 
-echo "<hr>";
-echo "<h1> $Item </h1>";
-print_r($data[$Item]["totalSales"]);
-echo "<br>";
-print_r($data[$Item]["TotalTransactionAmount"]);
-echo "<br>";
-print_r($data[$Item]["WeightedAveragePrice"]);
-echo "<hr>";
 
 }
+
+echo json_encode($pack);
+exit();

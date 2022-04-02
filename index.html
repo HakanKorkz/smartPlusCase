@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartPlus Case</title>
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card-header bg-secondary mb-2 mt-2 text-center text-white text-info">
+                SmartPlus Case projesi data yüklenmesi ortalama 30-60 saniye arasınsda değişmektedir
+            </div>
+        </div>
+        <div class="col-12">
+            <form action="javascript:void(0)" id="formData">
+            <div class="row">
+                <div class="col-md-2">
+                        <label for="startDate">Tarih</label>
+                        <input type="date" class="form-control col-md-2" id="startDate" name="startDate">
+                </div>
+                <div class="col-md-2">
+                        <button type="submit" class="col-md-12 btn btn-success mt-4">
+                            Getir
+                        </button>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="col-12">
+            <table class="table table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">Toplam İşlem Miktarı (MVH)</th>
+                    <th scope="col">Toplam İşlem Tutarı (TL)</th>
+                    <th scope="col">Ağırlık Ortalama Fiyat (TL/MVH</th>
+                </tr>
+                </thead>
+                <tbody id="apiList">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>-->
+<script src="js/index.js"></script>
+</body>
+</html>
