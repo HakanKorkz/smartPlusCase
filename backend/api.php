@@ -1,5 +1,5 @@
 <?php
-set_time_limit(60000);
+set_time_limit(600);
 
 if (isset($_POST["startDate"])) {
     if (!empty($_POST["startDate"])) {
@@ -56,11 +56,18 @@ $conractUniq = conractUniq($connect);
 
 
 $pack = [];
-foreach ($conractUniq as $Item) {
-    $data = dates($Item, $connect);
-    $date = "$Item[6]$Item[7]/$Item[4]$Item[5]/20$Item[2]$Item[3] $Item[8]$Item[9]:00";
-    $pack[] = ["date" => $date, "totalSales" => $data[$Item]["totalSales"], "TotalTransactionAmount" => $data[$Item]["TotalTransactionAmount"], "WeightedAveragePrice" => $data[$Item]["WeightedAveragePrice"]];
+if (count($conractUniq) > 0) {
+    foreach ($conractUniq as $Item) {
+        $data = dates($Item, $connect);
+        $date = "$Item[6]$Item[7]/$Item[4]$Item[5]/20$Item[2]$Item[3] $Item[8]$Item[9]:00";
+        $pack[] = ["date" => $date, "totalSales" => $data[$Item]["totalSales"], "TotalTransactionAmount" => $data[$Item]["TotalTransactionAmount"], "WeightedAveragePrice" => $data[$Item]["WeightedAveragePrice"]];
 
+
+    }
+
+} else {
+
+    $pack[] = ["date" => "veri bulunamadı", "totalSales" => "veri bulunamadı", "TotalTransactionAmount" => "veri bulunamadı", "WeightedAveragePrice" => "veri bulunamadı"];
 
 }
 
